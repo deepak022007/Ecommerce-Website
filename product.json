@@ -1,0 +1,17 @@
+[
+    { "id": 1, "name": "Carbon Stealth Jacket", "type": "Outerwear", "price": 145000, "img": "https://images.unsplash.com/photo-1559551409-dadc959f76b8?q=80&w=1000&auto=format&fit=crop" },
+    { "id": 2, "name": "Apex GT Hoodie", "type": "Track", "price": 45000, "img": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=1000&auto=format&fit=crop" },
+    { "id": 3, "name": "Monaco Touring Coat", "type": "Signature", "price": 210000, "img": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=1000&auto=format&fit=crop" },
+    { "id": 4, "name": "Drift Tech Shirt", "type": "Performance", "price": 25000, "img": "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=1000&auto=format&fit=crop" },
+    { "id": 5, "name": "Velocita Leather", "type": "Leather", "price": 185000, "img": "https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?q=80&w=1000&auto=format&fit=crop" },
+    { "id": 6, "name": "Paddock Cargo Pant", "type": "Bottoms", "price": 35000, "img": "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?q=80&w=1000&auto=format&fit=crop" },
+    { "id": 7, "name": "Shadow Knit", "type": "Essentials", "price": 28000, "img": "https://images.unsplash.com/photo-1617137968427-b2b16738435d?q=80&w=1000&auto=format&fit=crop" },
+    { "id": 8, "name": "Grand Prix Blazer", "type": "Tailoring", "price": 95000, "img": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1000&auto=format&fit=crop" },
+    { "id": 9, "name": "Heritage Duffel", "type": "Accessories", "price": 110000, "img": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=1000&auto=format&fit=crop" },
+    { "id": 10, "name": "Circuit Trainer", "type": "Footwear", "price": 42000, "img": "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=1000&auto=format&fit=crop" },
+    { "id": 11, "name": "Tarmac Sunglasses", "type": "Eyewear", "price": 32000, "img": "https://images.unsplash.com/photo-1577803645773-f96470509666?q=80&w=1000&auto=format&fit=crop" },
+    { "id": 12, "name": "Rosso Racing Glove", "type": "Gear", "price": 18000, "img": "https://images.unsplash.com/photo-1589782182703-2aaa69037b5b?q=80&w=1000&auto=format&fit=crop" },
+    { "id": 13, "name": "Modena Silk Scarf", "type": "Accessories", "price": 15000, "img": "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?q=80&w=1000&auto=format&fit=crop" },
+    { "id": 14, "name": "Turbo Chrono Watch", "type": "Timepiece", "price": 450000, "img": "https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=1000&auto=format&fit=crop" },
+    { "id": 15, "name": "Pitstop Cap", "type": "Headwear", "price": 8500, "img": "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=1000&auto=format&fit=crop" }
+]

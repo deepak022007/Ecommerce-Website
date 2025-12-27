@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DENAN | Checkout</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #050505; --surface: #0f0f0f; --text: #e0e0e0; --accent: #ff2a2a; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; padding: 2rem; }
+        
+        .checkout-container { max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+        h1 { font-family: 'Cinzel', serif; color: white; margin-bottom: 2rem; border-bottom: 1px solid #333; padding-bottom: 1rem; }
+        
+        /* Form Styling */
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; font-size: 0.8rem; letter-spacing: 0.1em; color: #888; }
+        input, textarea { width: 100%; background: var(--surface); border: 1px solid #333; color: white; padding: 1rem; font-family: 'Inter', sans-serif; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--accent); }
+
+        /* UPI Section */
+        .payment-section { background: var(--surface); padding: 2rem; border: 1px solid #333; text-align: center; }
+        .qr-code { background: white; padding: 10px; display: inline-block; margin: 1rem 0; border-radius: 4px; }
+        .qr-code img { width: 150px; height: 150px; display: block; }
+        
+        .pay-btn { display: block; width: 100%; background: var(--accent); color: white; padding: 1rem; text-transform: uppercase; font-weight: bold; text-decoration: none; margin-top: 1rem; cursor: pointer; border: none; }
+        .pay-btn:hover { background: red; }
+        
+        .total-price { font-size: 1.5rem; font-family: 'Cinzel', serif; margin: 1rem 0; color: white; }
+        
+        @media(max-width: 768px) { .checkout-container { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <div class="checkout-container">
+        <div>
+            <h1>Shipping</h1>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="name" placeholder="John Doe">
+            </div>
+            <div class="form-group">
+                <label>Address</label>
+                <textarea id="address" rows="3" placeholder="Street, City, Zip"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="text" id="phone" placeholder="+91 98765 43210">
+            </div>
+        </div>
+
+        <div>
+            <h1>Payment</h1>
+            <div class="payment-section">
+                <p>Scan to Pay or Click Button</p>
+                <div class="total-price" id="display-total">INR 0</div>
+
+                <div class="qr-code">
+                    <img id="upi-qr" src="" alt="UPI QR">
+                </div>
+
+                <a id="upi-link" href="#" class="pay-btn">Pay via UPI App</a>
+                
+                <hr style="border: 0; border-top: 1px solid #333; margin: 1.5rem 0;">
+                
+                <div class="form-group" style="text-align: left;">
+                    <label>Enter Transaction ID (UTR)</label>
+                    <input type="text" id="utr" placeholder="Example: 3245678912">
+                </div>
+                
+                <button class="pay-btn" style="background: white; color: black;" onclick="placeOrder()">Confirm Order</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. SETUP VARIABLES
+        // REPLACE THIS WITH YOUR OWN UPI ID
+        const MERCHANT_UPI = "deepak123456780123456780-1@oksbi"; 
+        const MERCHANT_NAME = "DENAN Store";
+
+        // 2. Load Cart Total
+        const cart = JSON.parse(localStorage.getItem('denanCart')) || [];
+        const total = cart.reduce((sum, item) => sum + item.price, 0);
+        
+        document.getElementById('display-total').innerText = "INR " + total.toLocaleString();
+
+        if(total > 0) {
+            // 3. Generate UPI Link: upi://pay?pa=...&pn=...&am=...
+            const upiLink = `upi://pay?pa=${MERCHANT_UPI}&pn=${MERCHANT_NAME}&am=${total}&cu=INR`;
+            
+            // Set the Link for Mobile Button
+            document.getElementById('upi-link').href = upiLink;
+
+            // Generate QR Code Image automatically using a free API
+            // This converts the UPI link into a visual QR code
+            document.getElementById('upi-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}`;
+        }
+
+        // 4. Handle Order Submission
+        function placeOrder() {
+            const name = document.getElementById('name').value;
+            const utr = document.getElementById('utr').value;
+
+            if(!name || !utr) {
+                alert("Please enter Name and Transaction ID (UTR) to confirm.");
+                return;
+            }
+
+            // Send data to Python Backend
+            fetch('/api/place_order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    customer: name,
+                    items: cart,
+                    total: total,
+                    payment_id: utr
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert("Order Placed Successfully! Order ID: " + data.order_id);
+                localStorage.removeItem('denanCart'); // Clear cart
+                window.location.href = '/'; // Go home
+            });
+        }
+    </script>
+</body>
+</html>

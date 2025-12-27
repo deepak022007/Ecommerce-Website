@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DENAN | Cart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #050505; --surface: #0f0f0f; --text: #e0e0e0; --accent: #ff2a2a; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; padding: 4rem; }
+        
+        nav { display: flex; justify-content: space-between; margin-bottom: 4rem; border-bottom: 1px solid #222; padding-bottom: 2rem; }
+        .logo a { color: white; text-decoration: none; font-family: 'Cinzel', serif; font-weight: 700; font-size: 1.5rem; }
+        
+        .cart-table { width: 100%; border-collapse: collapse; margin-bottom: 3rem; }
+        .cart-table th { text-align: left; text-transform: uppercase; font-size: 0.7rem; color: #666; letter-spacing: 0.2em; padding-bottom: 1rem; border-bottom: 1px solid #222; }
+        .cart-table td { padding: 2rem 0; border-bottom: 1px solid #111; vertical-align: middle; }
+        
+        .item-row { display: flex; align-items: center; gap: 1rem; }
+        .item-thumb { width: 60px; height: 80px; object-fit: cover; filter: grayscale(100%); }
+        .item-name { font-family: 'Cinzel', serif; font-size: 1.1rem; }
+        .item-meta { font-size: 0.7rem; color: #666; text-transform: uppercase; margin-top: 0.2rem; }
+        
+        .btn-remove { background: transparent; border: 1px solid #333; color: #666; width: 30px; height: 30px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
+        .btn-remove:hover { border-color: var(--accent); color: var(--accent); }
+
+        .summary { display: flex; justify-content: flex-end; flex-direction: column; align-items: flex-end; }
+        .total { font-family: 'Cinzel', serif; font-size: 2rem; margin-bottom: 2rem; }
+        .btn-checkout { background: var(--accent); color: white; border: none; padding: 1rem 3rem; text-transform: uppercase; letter-spacing: 0.2em; cursor: pointer; font-family: 'Inter', sans-serif; transition: 0.3s; }
+        .btn-checkout:hover { background: #d00000; }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo"><a href="/">DENAN</a></div>
+        <div style="font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;">Review Selection</div>
+    </nav>
+
+    <table class="cart-table">
+        <thead>
+            <tr>
+                <th width="60%">Item</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="cart-items">
+            </tbody>
+    </table>
+
+    <div class="summary">
+        <div class="total" id="cart-total">Total: ₹0</div>
+        <button class="btn-checkout" onclick="window.location.href='/checkout'">Proceed to Payment</button>
+    </div>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('denanCart')) || [];
+        
+        function renderCart() {
+            const container = document.getElementById('cart-items');
+            container.innerHTML = ''; 
+            let total = 0;
+
+            if(cart.length === 0) {
+                container.innerHTML = "<tr><td colspan='3' style='text-align:center; color:#666; padding:4rem;'>Your cart is empty. <a href='/' style='color:white;'>Return to Collection</a></td></tr>";
+                document.getElementById('cart-total').innerText = "Total: ₹0";
+                return;
+            }
+
+            cart.forEach((item, index) => {
+                total += item.price;
+                container.innerHTML += `
+                    <tr>
+                        <td>
+                            <div class="item-row">
+                                <img src="${item.img}" class="item-thumb">
+                                <div>
+                                    <div class="item-name">${item.name}</div>
+                                    <div class="item-meta">ID: 00${item.id} / ${item.type || 'Standard'}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>₹${item.price.toLocaleString()}</td>
+                        <td><button class="btn-remove" onclick="removeItem(${index})">✕</button></td>
+                    </tr>
+                `;
+            });
+            document.getElementById('cart-total').innerText = "Total: ₹" + total.toLocaleString();
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('denanCart', JSON.stringify(cart));
+            renderCart();
+        }
+
+        renderCart();
+    </script>
+</body>
+</html>
